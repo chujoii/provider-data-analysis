@@ -39,5 +39,16 @@ csv_file_name = sys.argv[1]
 
 with open(csv_file_name, newline='\n') as csv_file:
     raw_data = csv.reader(csv_file, delimiter=',', quotechar='"')
+
+    # This skips the first row of the CSV file.
+    header_line = next(raw_data)
+
+    amount = 0.0
+    row_count = 0
+
     for row in raw_data:
-        print('\t'.join(row))
+        #print('\t'.join(row))
+        amount += int(row[4])+ int(row[5]) + int(row[6])
+        row_count += 1
+
+    print ("mean = %.0f"% (amount/row_count))
