@@ -31,11 +31,15 @@ __status__ = "Prototype"
 
 import sys
 import csv
+import math
+import statistics
 
 if len(sys.argv) < 2:
     print('\tuse:\n./stat.py ../path/to/data-file.csv')
     sys.exit(0)
 csv_file_name = sys.argv[1]
+
+stat_data=[]
 
 with open(csv_file_name, newline='\n') as csv_file:
     raw_data = csv.reader(csv_file, delimiter=',', quotechar='"')
@@ -43,12 +47,14 @@ with open(csv_file_name, newline='\n') as csv_file:
     # This skips the first row of the CSV file.
     header_line = next(raw_data)
 
-    amount = 0.0
     row_count = 0
 
     for row in raw_data:
-        #print('\t'.join(row))
-        amount += int(row[4])+ int(row[5]) + int(row[6])
+        stat_data.append(float(row[4])+ float(row[5]) + float(row[6]))
         row_count += 1
 
-    print ("mean = %.0f"% (amount/row_count))
+    print ("median = %.0f"% (statistics.median(stat_data)))
+    mean_value = statistics.mean(stat_data)
+    variance = statistics.variance(stat_data, mean_value)
+    students_coeff = 2.0 # Student's t-distributions for 95%
+    print ("mean = %.0f ± %.2f"% (mean_value, students_coeff * math.sqrt(variance/(row_count*(row_count - 1))))) 
