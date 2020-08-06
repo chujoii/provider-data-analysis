@@ -89,11 +89,20 @@ with open(csv_file_name, newline='\n') as csv_file:
         counter_provider_tv, dir_provider_tv = calc_distribution(csv_tv, row, counter_provider_tv, dir_provider_tv)
 
 
-    print ("median = %.0f"% (statistics.median(stat_data)))
-    mean_value = statistics.mean(stat_data)
-    variance = statistics.variance(stat_data, mean_value)
-    students_coeff = 2.0 # Student's t-distributions for 95%
-    print ("mean = %.0f ± %.2f"% (mean_value, students_coeff * math.sqrt(variance/(counter_row*(counter_row - 1)))))
+print ("median = %.0f"% (statistics.median(stat_data)))
+mean_value = statistics.mean(stat_data)
+variance = statistics.variance(stat_data, mean_value)
+students_coeff = 2.0 # Student's t-distributions for 95%
+print ("mean = %.0f ± %.2f"% (mean_value, students_coeff * math.sqrt(variance/(counter_row*(counter_row - 1)))))
 
-    print("internet:", dir_provider_internet)
-    print("internet:", dir_provider_tv)
+print("internet:", dir_provider_internet)
+print("internet(%):", end =" ")
+for key, value in dict(map(lambda x:(x[0], x[1]*100.0/counter_provider_internet), dir_provider_internet.items())).items():
+    print("'%s': %.2f%%\t" % (key, value), end =" ")
+print()
+
+print("tv:", dir_provider_tv)
+print("tv(%):", end =" ")
+for key, value in dict(map(lambda x:(x[0], x[1]*100.0/counter_provider_tv), dir_provider_tv.items())).items():
+    print("'%s': %.2f%%\t" % (key, value), end =" ")
+print()
