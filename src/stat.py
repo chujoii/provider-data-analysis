@@ -99,10 +99,16 @@ print("internet:", dir_provider_internet)
 print("internet(%):", end =" ")
 for key, value in dict(map(lambda x:(x[0], x[1]*100.0/counter_provider_internet), dir_provider_internet.items())).items():
     print("'%s': %.2f%%\t" % (key, value), end =" ")
+print("\nmarket penetration for internet:", end =" ")
+for key, value in dict(map(lambda x:(x[0], x[1]/counter_row), dir_provider_internet.items())).items():
+    print("'%s': %.2f\t" % (key, value), end =" ")
 print()
 
 print("tv:", dir_provider_tv)
 print("tv(%):", end =" ")
 for key, value in dict(map(lambda x:(x[0], x[1]*100.0/counter_provider_tv), dir_provider_tv.items())).items():
     print("'%s': %.2f%%\t" % (key, value), end =" ")
+print("\nmarket penetration for tv:", end =" ")
+for key, value in dict(map(lambda x:(x[0], x[1]/counter_row), dir_provider_tv.items())).items():
+    print("'%s': %.2f\t" % (key, value), end =" ")
 print()
