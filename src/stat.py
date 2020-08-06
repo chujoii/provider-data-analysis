@@ -125,31 +125,31 @@ with open(csv_file_name, newline='\n') as csv_file:
         dir_provider_yield = calc_yield(row, dir_provider_yield)
 
 
-print ("median = %.0f"% (statistics.median(stat_data)))
+print ("медиана чека = %.0f"% (statistics.median(stat_data)))
 mean_value = statistics.mean(stat_data)
 variance = statistics.variance(stat_data, mean_value)
 students_coeff = 2.0 # Student's t-distributions for 95%
-print ("mean = %.0f ± %.2f"% (mean_value, students_coeff * math.sqrt(variance/(counter_row*(counter_row - 1)))))
+print ("средний чек = %.0f ± %.2f"% (mean_value, students_coeff * math.sqrt(variance/(counter_row*(counter_row - 1)))))
 
-print("\ninternet:")
+print("\nпользователей интернет:")
 print_sorted_dict_by_value("'%s':\t%d\t", dir_provider_internet)
 
-print("\ninternet(%):")
+print("\nдоли рынка интернет (%):")
 print_sorted_dict_by_value("'%s':\t%.2f%%\t", dict(map(lambda x:(x[0], x[1]*100.0/counter_provider_internet), dir_provider_internet.items())))
 
-print("\nmarket penetration for internet:")
+print("\nпроникновение услуг интернет:")
 print_sorted_dict_by_value("'%s': %.2f\t", dict(map(lambda x:(x[0], x[1]/counter_row), dir_provider_internet.items())))
 
-print("\ntv:")
+print("\nтелезрителей:")
 print_sorted_dict_by_value("'%s':\t%d\t", dir_provider_tv)
 
-print("\ntv(%):")
+print("\nдоли рынка ТВ(%):")
 print_sorted_dict_by_value("'%s': %.2f%%\t", dict(map(lambda x:(x[0], x[1]*100.0/counter_provider_tv), dir_provider_tv.items())))
 
-print("\nmarket penetration for tv:")
+print("\nпроникновение услуг ТВ:")
 print_sorted_dict_by_value("'%s': %.2f\t", dict(map(lambda x:(x[0], x[1]/counter_row), dir_provider_tv.items())))
 
-print('\nyield:')
+print('\nприбыль:')
 print_sorted_dict_by_value("'%s': %d\t", dir_provider_yield)
 
 print()
