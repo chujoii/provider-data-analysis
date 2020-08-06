@@ -55,6 +55,7 @@ counter_provider_internet = 0 # different from counter_row, because some people 
 dir_provider_internet = {}
 counter_provider_tv = 0 # different from counter_row, because some people use two (or more) provider for example ../data/city-002.csv see: 6.08
 dir_provider_tv = {}
+dir_provider_yield = {}
 
 
 
@@ -62,15 +63,42 @@ pattern = re.compile('[- а-яА-Я0-9]+') # '-' for non-existent
 
 
 
+def create_or_update_dict(key, value, dict):
+    if key in dict:
+        dict[key] += value
+    else:
+        dict[key] = value
+    return dict
+
+
+
 def calc_distribution (csv_provider, data, counter, dictionary_provider):
     used_providers = pattern.findall(data[csv_provider])
     for match in used_providers:
         counter += 1
-        if match in dictionary_provider:
-            dictionary_provider[match] += 1
-        else:
-            dictionary_provider[match] = 1
+        create_or_update_dict(match, 1, dictionary_provider)
     return counter, dictionary_provider
+
+
+
+def calc_yield (data, dictionary_provider):
+    net_providers = pattern.findall(data[csv_internet])
+    tv_providers = pattern.findall(data[csv_tv])
+
+    if int(data[csv_payment_for_all]) > 0:
+        if int(data[csv_payment_for_internet]) > 0:
+            diff_nt = list(set(net_providers) - set(tv_providers))
+            create_or_update_dict(diff_nt[0], int(data[csv_payment_for_internet]), dictionary_provider)
+        elif int(data[csv_payment_for_tv]) > 0:
+            diff_tn = list(set(tv_providers) - set(net_providers))
+            create_or_update_dict(diff_tn[0], int(data[csv_payment_for_tv]), dictionary_provider)
+        union_nt = list(set(net_providers) & set(tv_providers))
+        if len(union_nt)>0: # fix error: city2 page2 line19
+            create_or_update_dict(union_nt[0], int(data[csv_payment_for_all]), dictionary_provider)
+    else:
+        create_or_update_dict(net_providers[0], int(data[csv_payment_for_internet]), dictionary_provider)
+        create_or_update_dict(tv_providers[0], int(data[csv_payment_for_tv]), dictionary_provider)
+    return dictionary_provider
 
 
 
@@ -87,6 +115,7 @@ with open(csv_file_name, newline='\n') as csv_file:
                          float(row[csv_payment_for_all]))
         counter_provider_internet, dir_provider_internet = calc_distribution(csv_internet, row, counter_provider_internet, dir_provider_internet)
         counter_provider_tv, dir_provider_tv = calc_distribution(csv_tv, row, counter_provider_tv, dir_provider_tv)
+        dir_provider_yield = calc_yield(row, dir_provider_yield)
 
 
 print ("median = %.0f"% (statistics.median(stat_data)))
@@ -112,3 +141,5 @@ print("\nmarket penetration for tv:", end =" ")
 for key, value in dict(map(lambda x:(x[0], x[1]/counter_row), dir_provider_tv.items())).items():
     print("'%s': %.2f\t" % (key, value), end =" ")
 print()
+
+print('yield', dir_provider_yield)
