@@ -49,10 +49,30 @@ csv_payment_for_tv = 5
 csv_payment_for_all = 6
 csv_apartment_or_house = 7
 
+counter_row = 0
 stat_data=[]
-provider_internet={}
+counter_provider_internet = 0 # different from counter_row, because some people use two (or more) provider for example ../data/city-002.csv see: 6.08
+dir_provider_internet = {}
+counter_provider_tv = 0 # different from counter_row, because some people use two (or more) provider for example ../data/city-002.csv see: 6.08
+dir_provider_tv = {}
+
+
 
 pattern = re.compile('[- а-яА-Я0-9]+') # '-' for non-existent
+
+
+
+def calc_distribution (csv_provider, data, counter, dictionary_provider):
+    used_providers = pattern.findall(data[csv_provider])
+    for match in used_providers:
+        counter += 1
+        if match in dictionary_provider:
+            dictionary_provider[match] += 1
+        else:
+            dictionary_provider[match] = 1
+    return counter, dictionary_provider
+
+
 
 with open(csv_file_name, newline='\n') as csv_file:
     raw_data = csv.reader(csv_file, delimiter=',', quotechar='"')
@@ -60,28 +80,20 @@ with open(csv_file_name, newline='\n') as csv_file:
     # This skips the first row of the CSV file.
     header_line = next(raw_data)
 
-    row_count = 0
-    provider_internet_count = 0 # different from row_count, because some people use two (or more) provider for example ../data/city-002.csv see: 6.08
-
     for row in raw_data:
-        row_count += 1
+        counter_row += 1
         stat_data.append(float(row[csv_payment_for_internet]) +
                          float(row[csv_payment_for_tv]) +
                          float(row[csv_payment_for_all]))
-
-        provider = pattern.findall(row[csv_internet])
-        for match in provider:
-            provider_internet_count += 1
-            if match in provider_internet:
-                provider_internet[match] += 1
-            else:
-                provider_internet[match] = 1
+        counter_provider_internet, dir_provider_internet = calc_distribution(csv_internet, row, counter_provider_internet, dir_provider_internet)
+        counter_provider_tv, dir_provider_tv = calc_distribution(csv_tv, row, counter_provider_tv, dir_provider_tv)
 
 
     print ("median = %.0f"% (statistics.median(stat_data)))
     mean_value = statistics.mean(stat_data)
     variance = statistics.variance(stat_data, mean_value)
     students_coeff = 2.0 # Student's t-distributions for 95%
-    print ("mean = %.0f ± %.2f"% (mean_value, students_coeff * math.sqrt(variance/(row_count*(row_count - 1))))) 
+    print ("mean = %.0f ± %.2f"% (mean_value, students_coeff * math.sqrt(variance/(counter_row*(counter_row - 1)))))
 
-    print("internet:", provider_internet)
+    print("internet:", dir_provider_internet)
+    print("internet:", dir_provider_tv)
