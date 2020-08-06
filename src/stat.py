@@ -102,6 +102,13 @@ def calc_yield (data, dictionary_provider):
 
 
 
+def print_sorted_dict_by_value(format, dict):
+    sort_by_value = sorted(dict.items(), key=lambda x: x[1], reverse=True)
+    for i in sort_by_value:
+        print(format % (i[0], i[1]))
+
+
+
 with open(csv_file_name, newline='\n') as csv_file:
     raw_data = csv.reader(csv_file, delimiter=',', quotechar='"')
 
@@ -124,22 +131,26 @@ variance = statistics.variance(stat_data, mean_value)
 students_coeff = 2.0 # Student's t-distributions for 95%
 print ("mean = %.0f ± %.2f"% (mean_value, students_coeff * math.sqrt(variance/(counter_row*(counter_row - 1)))))
 
-print("internet:", dir_provider_internet)
-print("internet(%):", end =" ")
-for key, value in dict(map(lambda x:(x[0], x[1]*100.0/counter_provider_internet), dir_provider_internet.items())).items():
-    print("'%s': %.2f%%\t" % (key, value), end =" ")
-print("\nmarket penetration for internet:", end =" ")
-for key, value in dict(map(lambda x:(x[0], x[1]/counter_row), dir_provider_internet.items())).items():
-    print("'%s': %.2f\t" % (key, value), end =" ")
+print("\ninternet:")
+print_sorted_dict_by_value("'%s':\t%d\t", dir_provider_internet)
+
+print("\ninternet(%):")
+print_sorted_dict_by_value("'%s':\t%.2f%%\t", dict(map(lambda x:(x[0], x[1]*100.0/counter_provider_internet), dir_provider_internet.items())))
+
+print("\nmarket penetration for internet:")
+print_sorted_dict_by_value("'%s': %.2f\t", dict(map(lambda x:(x[0], x[1]/counter_row), dir_provider_internet.items())))
+
+print("\ntv:")
+print_sorted_dict_by_value("'%s':\t%d\t", dir_provider_tv)
+
+print("\ntv(%):")
+print_sorted_dict_by_value("'%s': %.2f%%\t", dict(map(lambda x:(x[0], x[1]*100.0/counter_provider_tv), dir_provider_tv.items())))
+
+print("\nmarket penetration for tv:")
+print_sorted_dict_by_value("'%s': %.2f\t", dict(map(lambda x:(x[0], x[1]/counter_row), dir_provider_tv.items())))
+
+print('\nyield:')
+print_sorted_dict_by_value("'%s': %d\t", dir_provider_yield)
+
 print()
 
-print("tv:", dir_provider_tv)
-print("tv(%):", end =" ")
-for key, value in dict(map(lambda x:(x[0], x[1]*100.0/counter_provider_tv), dir_provider_tv.items())).items():
-    print("'%s': %.2f%%\t" % (key, value), end =" ")
-print("\nmarket penetration for tv:", end =" ")
-for key, value in dict(map(lambda x:(x[0], x[1]/counter_row), dir_provider_tv.items())).items():
-    print("'%s': %.2f\t" % (key, value), end =" ")
-print()
-
-print('yield', dir_provider_yield)
