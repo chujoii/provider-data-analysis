@@ -138,7 +138,7 @@ with open(csv_file_name, newline='\n') as csv_file:
         dir_provider_yield = calc_yield(row, dir_provider_yield)
 
 
-print ("медиана чека = %.0f"% (statistics.median(stat_data))) # fixme gettext: median check
+print ("медианный чек = %.0f"% (statistics.median(stat_data))) # fixme gettext: median check
 mean_value = statistics.mean(stat_data)
 variance = statistics.variance(stat_data, mean_value)
 students_coeff = 2.0 # Student's t-distributions for 95%
@@ -147,32 +147,32 @@ print ("средний чек = %.0f ± %.2f" % (mean_value, students_coeff * ma
 
 
 print("\nпользователей интернет:") # fixme gettext: internet users
-print_sorted_dict_by_value("'%s':%s%10d\t",  dir_provider_internet)
+print_sorted_dict_by_value("%s%s%10d\t",  dir_provider_internet)
 
 print("\nдоли рынка интернет (%):") # fixme gettext: internet market share
-print_sorted_dict_by_value("'%s':%s%10.2f%%\t", dict(map(lambda x:(x[0], x[1]*100.0/counter_provider_internet), dir_provider_internet.items())))
+print_sorted_dict_by_value("%s%s%10.2f%%\t", dict(map(lambda x:(x[0], x[1]*100.0/counter_provider_internet), dir_provider_internet.items())))
 
-print("\nпроникновение услуг интернет:") # fixme gettext: market penetration for internet
-print_sorted_dict_by_value("'%s':%s%10.2f\t", dict(map(lambda x:(x[0], x[1]/counter_row), dir_provider_internet.items())))
+print("\nпроникновение интернет услуг:") # fixme gettext: market penetration for internet
+print_sorted_dict_by_value("%s%s%10.2f\t", dict(map(lambda x:(x[0], x[1]/counter_row), dir_provider_internet.items())))
 
 
 
 print("\nтелезрителей:") # fixme gettext: number of television viewers
-print_sorted_dict_by_value("'%s':%s%10d\t", dir_provider_tv)
+print_sorted_dict_by_value("%s%s%10d\t", dir_provider_tv)
 
 print("\nдоли рынка ТВ(%):") # fixme gettext: TV market share
-print_sorted_dict_by_value("'%s':%s%10.2f%%\t", dict(map(lambda x:(x[0], x[1]*100.0/counter_provider_tv), dir_provider_tv.items())))
+print_sorted_dict_by_value("%s%s%10.2f%%\t", dict(map(lambda x:(x[0], x[1]*100.0/counter_provider_tv), dir_provider_tv.items())))
 
-print("\nпроникновение услуг ТВ:") # fixme gettext: market penetration for TV
-print_sorted_dict_by_value("'%s':%s%10.2f\t", dict(map(lambda x:(x[0], x[1]/counter_row), dir_provider_tv.items())))
+print("\nпроникновение ТВ услуг:") # fixme gettext: market penetration for TV
+print_sorted_dict_by_value("%s%s%10.2f\t", dict(map(lambda x:(x[0], x[1]/counter_row), dir_provider_tv.items())))
 
 
 
 print('\nмедиана стоимости услуг:') # fixme gettext: median cost of services
-print_sorted_dict_by_value("'%s':%s%10.2f\t", dict(map(lambda x:(x[0], statistics.median (x[1])), dir_provider_yield.items())))
+print_sorted_dict_by_value("%s%s%10.2f\t", dict(map(lambda x:(x[0], statistics.median (x[1])), dir_provider_yield.items())))
 
 print('\nприбыль:') # fixme gettext: yield
-print_sorted_dict_by_value("'%s':%s%10.2f\t", dict(map(lambda x:(x[0], sum (x[1])), dir_provider_yield.items())))
+print_sorted_dict_by_value("%s%s%10.2f\t", dict(map(lambda x:(x[0], sum (x[1])), dir_provider_yield.items())))
 
 print()
 
