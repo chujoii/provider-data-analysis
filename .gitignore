@@ -1,0 +1,13 @@
+.*
+~*
+*tmp*
+*.pdf
+*.aux
+*.aux
+*.bbl
+*.blg
+*.idx
+*.out
+*.toc
+!.gitignore
+!*.example

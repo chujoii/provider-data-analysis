@@ -1,0 +1,70 @@
+\documentclass[unicode, 12pt, a4paper,oneside,fleqn]{article}
+
+\input{TeX/preambula-ru.tex}
+\usepackage[colorlinks=true]{hyperref} % url hyperlink (beamer already include it, so move here for prevent conflict)
+
+\author{Роман В. Приходченко}
+
+\title{Анализ данных}
+
+
+\makeindex
+
+
+
+\begin{document}
+
+% меняем английские термины на русские
+\renewcommand\bibname{СПИСОК ЛИТЕРАТУРЫ}
+\renewcommand\refname{\centering Список литературы}
+\renewcommand\contentsname{\centering Содержание}
+
+
+% образцы переноса сложных слов - не работает?
+% \hyphenation{веб=-ин-тер-фей-се веб-ин-тер-фей-с}
+% or use in text: веб"=интерфейс (require: \usepackage[russian]{babel})
+
+% печатаем титульный лист
+\makeatletter % generate \@title, \@date, ...
+\maketitle
+
+\begin{table}[ht]
+  \begin{tabular}{cc}
+    \includegraphics[width=2cm]{../CC_BY-SA_88x31.png} &
+    \shortstack{документ распространяется в соответствии с
+      условиями\\
+      \href{http://creativecommons.org/licenses/by-sa/3.0/}{Attribution-ShareAlike} \\
+      (Атрибуция — С сохранением условий) CC BY-SA \\
+      Копирование и распространение приветствуется.}
+  \end{tabular}
+\end{table}
+
+\newpage
+% печатаем оглавление
+\tableofcontents
+
+\newpage
+
+\section{Интерпретация}
+Странно, что в опросе практически не присутствуют мобильные сотовые
+операторы стотвой связи. По моим наблюдениям молодёжь даже при наличии
+стационарного компьютера или ноутбука предпочитает (для интернета,
+социальных сетей и просмотра коротких видео) смартфон.
+
+Вывод: опрос проводился в основном у старшего поколения, и
+соответственно получилась нерелевантная выборка.
+
+\section{Анализ}
+\begin{itemize}
+\item 
+\item 
+\item
+\item 
+\item 
+\item 
+\item 
+\end{itemize}
+
+\section{Выводы}
+
+\end{document}
