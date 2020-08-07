@@ -63,11 +63,19 @@ pattern = re.compile('[- а-яА-Я0-9]+') # '-' for non-existent
 
 
 
-def create_or_update_dict(key, value, dict):
+def create_or_sum_dict(key, value, dict):
     if key in dict:
         dict[key] += value
     else:
         dict[key] = value
+    return dict
+
+
+def create_or_update_dict(key, value, dict):
+    if key in dict:
+        dict[key].append(value)
+    else:
+        dict[key] = [value]
     return dict
 
 
@@ -76,7 +84,7 @@ def calc_distribution (csv_provider, data, counter, dictionary_provider):
     used_providers = pattern.findall(data[csv_provider])
     for match in used_providers:
         counter += 1
-        create_or_update_dict(match, 1, dictionary_provider)
+        create_or_sum_dict(match, 1, dictionary_provider)
     return counter, dictionary_provider
 
 
@@ -125,32 +133,41 @@ with open(csv_file_name, newline='\n') as csv_file:
         dir_provider_yield = calc_yield(row, dir_provider_yield)
 
 
-print ("медиана чека = %.0f"% (statistics.median(stat_data)))
+print ("медиана чека = %.0f"% (statistics.median(stat_data))) # fixme gettext: median check
 mean_value = statistics.mean(stat_data)
 variance = statistics.variance(stat_data, mean_value)
 students_coeff = 2.0 # Student's t-distributions for 95%
-print ("средний чек = %.0f ± %.2f"% (mean_value, students_coeff * math.sqrt(variance/(counter_row*(counter_row - 1)))))
+print ("средний чек = %.0f ± %.2f" % (mean_value, students_coeff * math.sqrt(variance/(counter_row*(counter_row - 1)))))  # fixme gettext: mean or average check
 
-print("\nпользователей интернет:")
+
+
+print("\nпользователей интернет:") # fixme gettext: internet users
 print_sorted_dict_by_value("'%s':\t%d\t", dir_provider_internet)
 
-print("\nдоли рынка интернет (%):")
+print("\nдоли рынка интернет (%):") # fixme gettext: internet market share
 print_sorted_dict_by_value("'%s':\t%.2f%%\t", dict(map(lambda x:(x[0], x[1]*100.0/counter_provider_internet), dir_provider_internet.items())))
 
-print("\nпроникновение услуг интернет:")
+print("\nпроникновение услуг интернет:") # fixme gettext: market penetration for internet
 print_sorted_dict_by_value("'%s': %.2f\t", dict(map(lambda x:(x[0], x[1]/counter_row), dir_provider_internet.items())))
 
-print("\nтелезрителей:")
+
+
+print("\nтелезрителей:") # fixme gettext: number of television viewers
 print_sorted_dict_by_value("'%s':\t%d\t", dir_provider_tv)
 
-print("\nдоли рынка ТВ(%):")
+print("\nдоли рынка ТВ(%):") # fixme gettext: TV market share
 print_sorted_dict_by_value("'%s': %.2f%%\t", dict(map(lambda x:(x[0], x[1]*100.0/counter_provider_tv), dir_provider_tv.items())))
 
-print("\nпроникновение услуг ТВ:")
+print("\nпроникновение услуг ТВ:") # fixme gettext: market penetration for TV
 print_sorted_dict_by_value("'%s': %.2f\t", dict(map(lambda x:(x[0], x[1]/counter_row), dir_provider_tv.items())))
 
-print('\nприбыль:')
-print_sorted_dict_by_value("'%s': %d\t", dir_provider_yield)
+
+
+print('\nмедиана стоимости услуг:') # fixme gettext: median cost of services
+print_sorted_dict_by_value("'%s': %.2f\t", dict(map(lambda x:(x[0], statistics.median (x[1])), dir_provider_yield.items())))
+
+print('\nприбыль:') # fixme gettext: yield
+print_sorted_dict_by_value("'%s': %.2f\t", dict(map(lambda x:(x[0], sum (x[1])), dir_provider_yield.items())))
 
 print()
 
